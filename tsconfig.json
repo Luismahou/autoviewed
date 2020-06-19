@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "ES2015",
+    "outDir": "build",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "dist", "build"]
+}
