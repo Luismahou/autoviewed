@@ -1,9 +1,9 @@
-import React, { useEffect, useReducer } from 'react';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import { Repo } from './repo';
-import { RepoList as RepoListModel, Action, reducer } from './model';
 import { makeStyles } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import React, { useEffect, useReducer } from 'react';
+import { Action, reducer, RepoList as RepoListModel } from './model';
+import { Repo } from './repo';
 
 type FinalAction =
   | { kind: 'LOADED_FROM_STORAGE'; repoList: RepoListModel }

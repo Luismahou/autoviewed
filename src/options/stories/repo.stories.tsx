@@ -1,6 +1,6 @@
+import { action } from '@storybook/addon-actions';
 import React from 'react';
 import { Repo } from '../repo';
-import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Repo',
@@ -8,12 +8,12 @@ export default {
 };
 
 const baseProps = {
-      onDelete: action('on delete'),
-      onEditName: action('on edit name'),
-      onAddRule: action('on add rule'),
-      onUpdateRule: action('on update rule'),
-      onDeleteRule: action('on delete rule'),
-}
+  onDelete: action('on delete'),
+  onEditName: action('on edit name'),
+  onAddRule: action('on add rule'),
+  onUpdateRule: action('on update rule'),
+  onDeleteRule: action('on delete rule'),
+};
 
 export const WithoutRules = () => {
   return (

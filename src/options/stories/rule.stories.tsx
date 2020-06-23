@@ -1,5 +1,5 @@
-import React from 'react';
 import { action } from '@storybook/addon-actions';
+import React from 'react';
 import { Rule } from '../rule';
 
 export default {

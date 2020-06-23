@@ -1,6 +1,6 @@
+import Button from '@material-ui/core/Button';
 import React from 'react';
 import { RuleDialog } from '../rule-dialog';
-import Button from '@material-ui/core/Button';
 
 export default {
   title: 'Rule dialog',
