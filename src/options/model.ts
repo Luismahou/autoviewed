@@ -60,7 +60,7 @@ function repoUpdateName(state: RepoList, repoId: number, newName: string) {
 }
 function deleteRepo(state: RepoList, repoId: number) {
   return {
-    repos: state.repos.filter(repo => repo.id !== repoId),
+    repos: state.repos.filter((repo) => repo.id !== repoId),
   };
 }
 function addRule(state: RepoList, repoId: number) {

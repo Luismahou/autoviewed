@@ -9,7 +9,7 @@ import { Rule } from './rule';
 import { Repo as RepoModel } from './model';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   hbox: {
     display: 'grid',
     gridGap: theme.spacing(2),
@@ -38,7 +38,7 @@ export const Repo = ({
       <CardHeader title={repo.name || 'Unnamed'} />
       <Divider variant="middle" />
       <CardContent>
-        {repo.rules.map(rule => {
+        {repo.rules.map((rule) => {
           return (
             <Rule
               key={rule.id}

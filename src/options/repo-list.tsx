@@ -26,7 +26,7 @@ function finalReducer(
   }
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   repoList: {
     display: 'grid',
     gridRowGap: theme.spacing(2),
@@ -52,7 +52,7 @@ export const RepoList = () => {
   return (
     <div>
       <div className={classes.repoList}>
-        {state.repos.map(repo => {
+        {state.repos.map((repo) => {
           const onDelete = () => {
             dispatch({ type: 'DELETE_REPO', repoId: repo.id });
           };
