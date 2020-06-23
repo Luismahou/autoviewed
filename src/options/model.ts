@@ -15,22 +15,17 @@ export type RepoList = {
 };
 
 export type Action =
-  | { type: 'ADD_REPO' }
-  | { type: 'REPO_UPDATE_NAME'; repoId: number; newName: string }
-  | { type: 'DELETE_REPO'; repoId: number }
-  | { type: 'ADD_RULE'; repoId: number }
-  | { type: 'DELETE_RULE'; repoId: number; ruleId: number }
+  | { kind: 'ADD_REPO' }
+  | { kind: 'UPDATE_REPO_NAME'; repoId: number; newName: string }
+  | { kind: 'DELETE_REPO'; repoId: number }
+  | { kind: 'ADD_RULE'; repoId: number; regex: string; hide: boolean }
+  | { kind: 'DELETE_RULE'; repoId: number; ruleId: number }
   | {
-      type: 'RULE_UPDATE_REGEX';
+      kind: 'UPDATE_RULE';
       repoId: number;
       ruleId: number;
       newRegex: string;
-    }
-  | {
-      type: 'RULE_UPDATE_HIDE_FLAG';
-      repoId: number;
-      ruleId: number;
-      newHideFlag: boolean;
+      newHide: boolean;
     };
 
 const computeNextRepoId = (repoList: RepoList) => {
@@ -63,54 +58,46 @@ function deleteRepo(state: RepoList, repoId: number) {
     repos: state.repos.filter((repo) => repo.id !== repoId),
   };
 }
-function addRule(state: RepoList, repoId: number) {
+function addRule(
+  state: RepoList,
+  repoId: number,
+  regex: string,
+  hide: boolean,
+) {
   return state;
 }
 function deleteRule(state: RepoList, repoId: number, ruleId: number) {
   return state;
 }
-function ruleUpdateRegex(
+function updateRule(
   state: RepoList,
   repoId: number,
   ruleId: number,
   newRegex: string,
-) {
-  return state;
-}
-function ruleUpdateHideFlag(
-  state: RepoList,
-  repoId: number,
-  ruleId: number,
-  newHideFlag: boolean,
+  newHide: boolean,
 ) {
   return state;
 }
 
 export function reducer(state: RepoList, action: Action): RepoList {
-  switch (action.type) {
+  switch (action.kind) {
     case 'ADD_REPO':
       return addRepo(state);
-    case 'REPO_UPDATE_NAME':
+    case 'UPDATE_REPO_NAME':
       return repoUpdateName(state, action.repoId, action.newName);
     case 'DELETE_REPO':
       return deleteRepo(state, action.repoId);
     case 'ADD_RULE':
-      return addRule(state, action.repoId);
+      return addRule(state, action.repoId, action.regex, action.hide);
     case 'DELETE_RULE':
       return deleteRule(state, action.repoId, action.ruleId);
-    case 'RULE_UPDATE_REGEX':
-      return ruleUpdateRegex(
+    case 'UPDATE_RULE':
+      return updateRule(
         state,
         action.repoId,
         action.ruleId,
         action.newRegex,
-      );
-    case 'RULE_UPDATE_HIDE_FLAG':
-      return ruleUpdateHideFlag(
-        state,
-        action.repoId,
-        action.ruleId,
-        action.newHideFlag,
+        action.newHide,
       );
   }
 }

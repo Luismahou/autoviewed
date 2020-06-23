@@ -37,32 +37,24 @@ const useStyles = makeStyles({
 
 type RuleProps = {
   rule: RuleModel;
-  onDeleteRule: () => void,
+  onDeleteRule: () => void;
   onUpdateRule: (newRegex: string, newHide: boolean) => void;
 };
 
-export const Rule = ({
-  rule,
-  onDeleteRule,
-  onUpdateRule,
-}: RuleProps) => {
-  // Invalidates `<RuleDialog>` internal state
-  const [ruleDialogKey, setRuleDialogKey] = React.useState(0);
+export const Rule = ({ rule, onDeleteRule, onUpdateRule }: RuleProps) => {
   const [showDialog, setShowDialog] = React.useState(false);
   const classes = useStyles();
 
   const onEdit = () => {
     setShowDialog(true);
-  }
+  };
   const onCancel = () => {
     setShowDialog(false);
-    setRuleDialogKey(ruleDialogKey + 1);
-  }
+  };
   const onSubmit = (newRegex: string, newHide: boolean) => {
     setShowDialog(false);
-    setRuleDialogKey(ruleDialogKey + 1);
     onUpdateRule(newRegex, newHide);
-  }
+  };
   return (
     <div className={classes.container}>
       <div className={classes.rule}>
@@ -76,7 +68,7 @@ export const Rule = ({
         )}
       </div>
       <div className={classes.toolbar}>
-        <IconButton onClick={onEdit} >
+        <IconButton onClick={onEdit}>
           <CreateIcon fontSize="small" />
         </IconButton>
         <IconButton onClick={onDeleteRule}>
@@ -84,7 +76,6 @@ export const Rule = ({
         </IconButton>
       </div>
       <RuleDialog
-        key={ruleDialogKey}
         kind="update"
         initialRegex={rule.regex}
         initialHide={rule.hide}

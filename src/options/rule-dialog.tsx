@@ -34,13 +34,16 @@ export const RuleDialog = (
     onSubmit: (regex: string, hide: boolean) => void;
   },
 ) => {
-  const [regex, setRegex] = React.useState(
-    props.kind === 'update' ? props.initialRegex : '',
-  );
-  const [hide, setHide] = React.useState(
-    props.kind === 'update' ? props.initialHide : false,
-  );
+  const [regex, setRegex] = React.useState('');
+  const [hide, setHide] = React.useState(false);
   const [submitAttempted, setSubmitAttempted] = React.useState(false);
+  React.useEffect(() => {
+    if (props.open) {
+      setRegex(props.kind === 'update' ? props.initialRegex : '');
+      setHide(props.kind === 'update' ? props.initialHide : false);
+      setSubmitAttempted(false);
+    }
+  }, [props.open]);
   const classes = useStyles();
 
   const title = props.kind === 'create' ? 'Add rule' : 'Update rule';

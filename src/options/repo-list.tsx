@@ -6,7 +6,7 @@ import { RepoList as RepoListModel, Action, reducer } from './model';
 import { makeStyles } from '@material-ui/core';
 
 type FinalAction =
-  | { type: 'LOADED_FROM_STORAGE'; repoList: RepoListModel }
+  | { kind: 'LOADED_FROM_STORAGE'; repoList: RepoListModel }
   | Action;
 
 type RepoListState = 'NOT_LOADED' | RepoListModel;
@@ -15,9 +15,9 @@ function finalReducer(
   state: RepoListState,
   action: FinalAction,
 ): RepoListState {
-  if (state === 'NOT_LOADED' && action.type === 'LOADED_FROM_STORAGE') {
+  if (state === 'NOT_LOADED' && action.kind === 'LOADED_FROM_STORAGE') {
     return action.repoList;
-  } else if (state !== 'NOT_LOADED' && action.type !== 'LOADED_FROM_STORAGE') {
+  } else if (state !== 'NOT_LOADED' && action.kind !== 'LOADED_FROM_STORAGE') {
     const nextState = reducer(state, action);
     // Save to local storate
     return nextState;
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export const RepoList = () => {
   const [state, dispatch] = useReducer(finalReducer, 'NOT_LOADED');
   useEffect(() => {
-    dispatch({ type: 'LOADED_FROM_STORAGE', repoList: { repos: [] } });
+    dispatch({ kind: 'LOADED_FROM_STORAGE', repoList: { repos: [] } });
   }, []);
   const classes = useStyles();
 
@@ -45,7 +45,7 @@ export const RepoList = () => {
   }
 
   const onAddRepo = () => {
-    dispatch({ type: 'ADD_REPO' });
+    dispatch({ kind: 'ADD_REPO' });
   };
   console.log('something: ', classes.repoList);
 
@@ -54,25 +54,32 @@ export const RepoList = () => {
       <div className={classes.repoList}>
         {state.repos.map((repo) => {
           const onDelete = () => {
-            dispatch({ type: 'DELETE_REPO', repoId: repo.id });
+            dispatch({ kind: 'DELETE_REPO', repoId: repo.id });
           };
-          const onAddRule = () => {
-            dispatch({ type: 'ADD_RULE', repoId: repo.id });
+          const onEditName = (newName: string) => {
+            dispatch({ kind: 'UPDATE_REPO_NAME', repoId: repo.id, newName });
           };
-          const onUpdateRuleRegex = (ruleId: number, newRegex: string) => {
+          const onAddRule = (regex: string, hide: boolean) => {
+            dispatch({ kind: 'ADD_RULE', repoId: repo.id, regex, hide });
+          };
+          const onUpdateRule = (
+            ruleId: number,
+            newRegex: string,
+            newHide: boolean,
+          ) => {
             dispatch({
-              type: 'RULE_UPDATE_REGEX',
+              kind: 'UPDATE_RULE',
               repoId: repo.id,
               ruleId,
               newRegex,
+              newHide,
             });
           };
-          const onUpdateHideFlag = (ruleId: number, newHideFlag: boolean) => {
+          const onDeleteRule = (ruleId: number) => {
             dispatch({
-              type: 'RULE_UPDATE_HIDE_FLAG',
+              kind: 'DELETE_RULE',
               repoId: repo.id,
               ruleId,
-              newHideFlag,
             });
           };
           return (
@@ -80,9 +87,10 @@ export const RepoList = () => {
               key={repo.id}
               repo={repo}
               onDelete={onDelete}
+              onEditName={onEditName}
               onAddRule={onAddRule}
-              onUpdateRuleRegex={onUpdateRuleRegex}
-              onUpdateHideFlag={onUpdateHideFlag}
+              onUpdateRule={onUpdateRule}
+              onDeleteRule={onDeleteRule}
             />
           );
         })}
