@@ -38,12 +38,12 @@ export const WithRules = () => {
         rules: [
           {
             id: 1,
-            regex: '^.*.snap$',
+            regex: '^.*\\.snap$',
             hide: true,
           },
           {
             id: 2,
-            regex: '^.*.proto.ts$',
+            regex: '^.*\\.proto\\.ts$',
             hide: false,
           },
         ],
