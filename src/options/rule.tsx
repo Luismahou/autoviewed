@@ -7,7 +7,7 @@ import React from 'react';
 import { Rule as RuleModel } from './model';
 import { RuleDialog } from './rule-dialog';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -16,20 +16,21 @@ const useStyles = makeStyles({
   rule: {
     display: 'grid',
     gridTemplateColumns: 'auto auto',
-    gridGap: 8,
+    gridGap: theme.spacing(2),
     alignItems: 'center',
   },
   regex: {
-    padding: 4,
-    border: '2px solid darkgray',
+    padding: theme.spacing(0.5),
+    border: `2px solid ${theme.palette.secondary.main}`,
     borderRadius: 4,
-    backgroundColor: '#EEE',
+    backgroundColor: theme.palette.background.default,
+    color: theme.palette.secondary.main,
   },
   toolbar: {
     display: 'grid',
     gridAutoFlow: 'column',
   },
-});
+}));
 
 type RuleProps = {
   rule: RuleModel;

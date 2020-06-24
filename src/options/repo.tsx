@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -6,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -14,14 +14,16 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import partial from 'lodash-es/partial';
 import React from 'react';
 import { Repo as RepoModel } from './model';
+import { RepoDialog } from './repo-dialog';
 import { Rule } from './rule';
 import { RuleDialog } from './rule-dialog';
 
 const useStyles = makeStyles((theme) => ({
-  hbox: {
+  message: {
     display: 'grid',
     gridGap: theme.spacing(2),
-    gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+    justifyItems: 'center',
+    padding: theme.spacing(4),
   },
 }));
 
@@ -42,7 +44,10 @@ export const Repo = ({
   onUpdateRule,
   onDeleteRule,
 }: RepoProps) => {
+  const classes = useStyles();
   const [showRuleDialog, setShowRuleDialog] = React.useState(false);
+  const [showRepoDialog, setShowRepoDialog] = React.useState(false);
+
   const onShowCreateRuleDialog = () => {
     setShowRuleDialog(true);
   };
@@ -52,6 +57,17 @@ export const Repo = ({
   const onCreateRule = (regex: string, hide: boolean) => {
     setShowRuleDialog(false);
     onAddRule(regex, hide);
+  };
+
+  const onShowEditRepoDialog = () => {
+    setShowRepoDialog(true);
+  };
+  const onCancelEditRepo = () => {
+    setShowRepoDialog(false);
+  };
+  const onUpdateRepo = (name: string) => {
+    setShowRepoDialog(false);
+    onEditName(name);
   };
   return (
     <>
@@ -70,7 +86,7 @@ export const Repo = ({
               </Tooltip>
               <Tooltip title="Edit repository name">
                 <IconButton
-                  onClick={() => console.log('todo')}
+                  onClick={onShowEditRepoDialog}
                   aria-label="Edit repository name"
                 >
                   <CreateIcon />
@@ -87,9 +103,10 @@ export const Repo = ({
         <Divider variant="middle" />
         <CardContent>
           {repo.rules.length === 0 && (
-            <>
+            <div className={classes.message}>
               <Typography>
-                Add rule to start auto approving files in this repository
+                Add rule to start approving files automatically in this
+                repository
               </Typography>
               <Button
                 variant="contained"
@@ -98,7 +115,7 @@ export const Repo = ({
               >
                 Add rule
               </Button>
-            </>
+            </div>
           )}
           {repo.rules.map((rule) => {
             return (
@@ -117,6 +134,13 @@ export const Repo = ({
         onCancel={onCancelCreateRule}
         onSubmit={onCreateRule}
         open={showRuleDialog}
+      />
+      <RepoDialog
+        kind="update"
+        initialName={repo.name}
+        onCancel={onCancelEditRepo}
+        onSubmit={onUpdateRepo}
+        open={showRepoDialog}
       />
     </>
   );

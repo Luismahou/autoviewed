@@ -11,12 +11,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from 'react';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   vbox: {
     display: 'grid',
-    gridGap: 8,
+    gridGap: theme.spacing(2),
   },
-});
+}));
 
 export const RuleDialog = (
   props: (
@@ -94,7 +94,7 @@ export const RuleDialog = (
               control={<Checkbox checked={hide} onChange={handleHideChange} />}
             />
             <FormHelperText>
-              Use this flag to also hide the files matched by the regular
+              Select this option to also hide the files matched by the regular
               expression
             </FormHelperText>
           </FormControl>

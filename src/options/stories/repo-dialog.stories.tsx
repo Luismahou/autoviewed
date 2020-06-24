@@ -1,15 +1,15 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import { RuleDialog } from '../rule-dialog';
+import { RepoDialog } from '../repo-dialog';
 
 export default {
-  title: 'Rule dialog',
-  component: RuleDialog,
+  title: 'Repo dialog',
+  component: RepoDialog,
 };
 
 export const Interactive = () => {
   const [kind, setKind] = React.useState<
-    React.ComponentProps<typeof RuleDialog>['kind']
+    React.ComponentProps<typeof RepoDialog>['kind']
   >('create');
   const [showDialog, setShowDialog] = React.useState(false);
   const onOpenCreateVariant = () => {
@@ -35,17 +35,16 @@ export const Interactive = () => {
         Open update dialog
       </Button>
       {kind === 'create' ? (
-        <RuleDialog
+        <RepoDialog
           kind="create"
           open={showDialog}
           onCancel={onCancel}
           onSubmit={onSubmit}
         />
       ) : (
-        <RuleDialog
+        <RepoDialog
           kind="update"
-          initialRegex=".*\.proto\.ts"
-          initialHide={false}
+          initialName="foo/bar"
           open={showDialog}
           onCancel={onCancel}
           onSubmit={onSubmit}
