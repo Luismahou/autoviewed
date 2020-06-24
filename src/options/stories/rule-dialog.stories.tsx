@@ -27,7 +27,7 @@ export const Interactive = () => {
     setShowDialog(false);
   };
   return (
-    <div key={kind}>
+    <>
       <Button variant="contained" onClick={onOpenCreateVariant}>
         Open create dialog
       </Button>
@@ -51,6 +51,6 @@ export const Interactive = () => {
           onSubmit={onSubmit}
         />
       )}
-    </div>
+    </>
   );
 };

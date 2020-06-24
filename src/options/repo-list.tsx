@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useReducer } from 'react';
 import { Action, reducer, RepoList as RepoListModel } from './model';
 import { Repo } from './repo';
+import { RepoDialog } from './repo-dialog';
 
 type FinalAction =
   | { kind: 'LOADED_FROM_STORAGE'; repoList: RepoListModel }
@@ -19,7 +20,7 @@ function finalReducer(
     return action.repoList;
   } else if (state !== 'NOT_LOADED' && action.kind !== 'LOADED_FROM_STORAGE') {
     const nextState = reducer(state, action);
-    // Save to local storate
+    // Save to local storage
     return nextState;
   } else {
     throw Error('unexpected state');
@@ -35,19 +36,26 @@ const useStyles = makeStyles((theme) => ({
 
 export const RepoList = () => {
   const [state, dispatch] = useReducer(finalReducer, 'NOT_LOADED');
+  const [showRepoDialog, setShowRepoDialog] = React.useState(false);
   useEffect(() => {
     dispatch({ kind: 'LOADED_FROM_STORAGE', repoList: { repos: [] } });
   }, []);
   const classes = useStyles();
 
+  const onShowCreateRepoDialog = () => {
+    setShowRepoDialog(true);
+  };
+  const onCancelCreateRepo = () => {
+    setShowRepoDialog(false);
+  };
+  const onCreateRepo = (name: string) => {
+    setShowRepoDialog(false);
+    dispatch({ kind: 'ADD_REPO', name });
+  };
+
   if (state === 'NOT_LOADED') {
     return <span>Loading...</span>;
   }
-
-  const onAddRepo = () => {
-    dispatch({ kind: 'ADD_REPO' });
-  };
-  console.log('something: ', classes.repoList);
 
   return (
     <div>
@@ -96,9 +104,19 @@ export const RepoList = () => {
         })}
       </div>
       {state.repos.length > 0 ? <Box p={1} /> : null}
-      <Button variant="contained" color="primary" onClick={onAddRepo}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onShowCreateRepoDialog}
+      >
         Add repository
       </Button>
+      <RepoDialog
+        kind="create"
+        open={showRepoDialog}
+        onCancel={onCancelCreateRepo}
+        onSubmit={onCreateRepo}
+      />
     </div>
   );
 };

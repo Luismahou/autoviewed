@@ -1,3 +1,5 @@
+import produce, { castDraft } from 'immer';
+
 export type Rule = {
   readonly id: number;
   readonly regex: string;
@@ -15,7 +17,7 @@ export type RepoList = {
 };
 
 export type Action =
-  | { kind: 'ADD_REPO' }
+  | { kind: 'ADD_REPO'; name: string }
   | { kind: 'UPDATE_REPO_NAME'; repoId: number; newName: string }
   | { kind: 'DELETE_REPO'; repoId: number }
   | { kind: 'ADD_RULE'; repoId: number; regex: string; hide: boolean }
@@ -28,35 +30,57 @@ export type Action =
       newHide: boolean;
     };
 
-const computeNextRepoId = (repoList: RepoList) => {
+function computeNextRepoId(repoList: RepoList) {
   const maxId = repoList.repos.reduce(
     (memo, repo) => Math.max(repo.id, memo),
     0,
   );
   return maxId + 1;
-};
-
-const computeNextRuleId = (repo: Repo) => {
+}
+function computeNextRuleId(repo: Repo) {
   const maxId = repo.rules.reduce((memo, rule) => Math.max(rule.id, memo), 0);
   return maxId + 1;
-};
+}
 
-function addRepo(state: RepoList) {
-  return {
-    repos: [
-      ...state.repos,
-      { id: computeNextRepoId(state), name: '', rules: [] },
-    ],
-  };
+function getRepoIndexOrThrow(state: RepoList, repoId: number) {
+  const repoIndex = state.repos.findIndex((repo) => repo.id === repoId);
+  if (repoIndex < 0) {
+    throw new Error(`No repo for ${repoId}`);
+  }
+
+  return repoIndex;
+}
+function getRepoOrThrow(state: RepoList, repoId: number) {
+  const repoIndex = getRepoIndexOrThrow(state, repoId);
+  return state.repos[repoIndex];
+}
+function getRuleIndexOrThrow(state: Repo, ruleId: number) {
+  const ruleIndex = state.rules.findIndex((rule) => rule.id === ruleId);
+  if (ruleIndex < 0) {
+    throw new Error(`No rule for ${ruleId}`);
+  }
+
+  return ruleIndex;
+}
+function getRuleOrThrow(state: Repo, ruleId: number) {
+  const ruleIndex = getRuleIndexOrThrow(state, ruleId);
+  return state.rules[ruleIndex];
+}
+
+function addRepo(state: RepoList, name: string) {
+  castDraft(state.repos).push({
+    id: computeNextRepoId(state),
+    name,
+    rules: [],
+  });
 }
 function repoUpdateName(state: RepoList, repoId: number, newName: string) {
-  // TODO
-  return state;
+  const repo = getRepoOrThrow(state, repoId);
+  castDraft(repo).name = newName;
 }
 function deleteRepo(state: RepoList, repoId: number) {
-  return {
-    repos: state.repos.filter((repo) => repo.id !== repoId),
-  };
+  const repoIndex = getRepoIndexOrThrow(state, repoId);
+  castDraft(state.repos).splice(repoIndex, 1);
 }
 function addRule(
   state: RepoList,
@@ -64,10 +88,17 @@ function addRule(
   regex: string,
   hide: boolean,
 ) {
-  return state;
+  const repo = getRepoOrThrow(state, repoId);
+  castDraft(repo.rules).push({
+    id: computeNextRuleId(repo),
+    regex,
+    hide,
+  });
 }
 function deleteRule(state: RepoList, repoId: number, ruleId: number) {
-  return state;
+  const repo = getRepoOrThrow(state, repoId);
+  const ruleIndex = getRuleIndexOrThrow(repo, ruleId);
+  castDraft(repo.rules).splice(ruleIndex, 1);
 }
 function updateRule(
   state: RepoList,
@@ -76,28 +107,41 @@ function updateRule(
   newRegex: string,
   newHide: boolean,
 ) {
-  return state;
+  const repo = getRepoOrThrow(state, repoId);
+  const rule = getRuleOrThrow(repo, ruleId);
+  castDraft(rule).regex = newRegex;
+  castDraft(rule).hide = newHide;
 }
 
-export function reducer(state: RepoList, action: Action): RepoList {
-  switch (action.kind) {
-    case 'ADD_REPO':
-      return addRepo(state);
-    case 'UPDATE_REPO_NAME':
-      return repoUpdateName(state, action.repoId, action.newName);
-    case 'DELETE_REPO':
-      return deleteRepo(state, action.repoId);
-    case 'ADD_RULE':
-      return addRule(state, action.repoId, action.regex, action.hide);
-    case 'DELETE_RULE':
-      return deleteRule(state, action.repoId, action.ruleId);
-    case 'UPDATE_RULE':
-      return updateRule(
-        state,
-        action.repoId,
-        action.ruleId,
-        action.newRegex,
-        action.newHide,
-      );
-  }
-}
+export const reducer = produce(
+  (draft: RepoList, action: Action): RepoList => {
+    switch (action.kind) {
+      case 'ADD_REPO':
+        addRepo(draft, action.name);
+        break;
+      case 'UPDATE_REPO_NAME':
+        repoUpdateName(draft, action.repoId, action.newName);
+        break;
+      case 'DELETE_REPO':
+        deleteRepo(draft, action.repoId);
+        break;
+      case 'ADD_RULE':
+        addRule(draft, action.repoId, action.regex, action.hide);
+        break;
+      case 'DELETE_RULE':
+        deleteRule(draft, action.repoId, action.ruleId);
+        break;
+      case 'UPDATE_RULE':
+        updateRule(
+          draft,
+          action.repoId,
+          action.ruleId,
+          action.newRegex,
+          action.newHide,
+        );
+        break;
+    }
+
+    return draft;
+  },
+);

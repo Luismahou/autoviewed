@@ -82,6 +82,7 @@ export const RuleDialog = (
               value={regex}
               onChange={handleRegexChange}
               fullWidth={true}
+              autoFocus={true}
             />
             <FormHelperText>
               The files matched by this regular expression will be approved

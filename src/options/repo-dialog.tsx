@@ -70,6 +70,7 @@ export const RepoDialog = (
             value={name}
             onChange={handleNameChange}
             fullWidth={true}
+            autoFocus={true}
           />
           <FormHelperText>
             This is the name of your github repository in the following format
