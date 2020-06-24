@@ -1,8 +1,4 @@
-import AppBar from '@material-ui/core/AppBar';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { AppBar, Box, Container, Toolbar, Typography } from '@material-ui/core';
 import React from 'react';
 import { RepoList } from './repo-list';
 

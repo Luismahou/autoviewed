@@ -1,0 +1,17 @@
+{
+  "options.js": {
+    "bundled": 343990,
+    "minified": 343465,
+    "gzipped": 105594
+  },
+  "background.js": {
+    "bundled": 362,
+    "minified": 362,
+    "gzipped": 218
+  },
+  "content-script.js": {
+    "bundled": 17076,
+    "minified": 16864,
+    "gzipped": 6094
+  }
+}

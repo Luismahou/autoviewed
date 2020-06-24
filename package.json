@@ -42,7 +42,9 @@
     "prettier": "^2.0.5",
     "prettier-plugin-organize-imports": "^1.1.0",
     "rollup": "^2.17.1",
+    "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-visualizer": "^4.0.4",
     "svg2png": "^4.1.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.5"
