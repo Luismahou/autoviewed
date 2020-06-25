@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "ES2015",
-    "outDir": "build",
+    "outDir": "dist",
     "rootDir": "src",
     "moduleResolution": "node",
     "sourceMap": true,
