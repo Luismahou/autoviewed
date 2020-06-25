@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import React from 'react';
 import { RepoList } from '../repo-list';
 
@@ -7,5 +8,7 @@ export default {
 };
 
 export const Interactive = () => {
-  return <RepoList />;
+  return (
+    <RepoList onChange={action('on change')} initialRepoList={{ repos: [] }} />
+  );
 };

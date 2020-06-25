@@ -1,30 +1,17 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Action, reducer, RepoList as RepoListModel } from './model';
 import { Repo } from './repo';
 import { RepoDialog } from './repo-dialog';
 
-type FinalAction =
-  | { kind: 'LOADED_FROM_STORAGE'; repoList: RepoListModel }
-  | Action;
-
-type RepoListState = 'NOT_LOADED' | RepoListModel;
-
-function finalReducer(
-  state: RepoListState,
-  action: FinalAction,
-): RepoListState {
-  if (state === 'NOT_LOADED' && action.kind === 'LOADED_FROM_STORAGE') {
-    return action.repoList;
-  } else if (state !== 'NOT_LOADED' && action.kind !== 'LOADED_FROM_STORAGE') {
+function createReducer(onChange: (newRepoList: RepoListModel) => void) {
+  return (state: RepoListModel, action: Action): RepoListModel => {
     const nextState = reducer(state, action);
-    // Save to local storage
+    onChange(nextState);
     return nextState;
-  } else {
-    throw Error('unexpected state');
-  }
+  };
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -34,12 +21,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RepoList = () => {
-  const [state, dispatch] = useReducer(finalReducer, 'NOT_LOADED');
-  const [showRepoDialog, setShowRepoDialog] = React.useState(false);
-  useEffect(() => {
-    dispatch({ kind: 'LOADED_FROM_STORAGE', repoList: { repos: [] } });
-  }, []);
+export const RepoList = ({
+  initialRepoList,
+  onChange,
+}: {
+  initialRepoList: RepoListModel;
+  onChange: (newRepoList: RepoListModel) => void;
+}) => {
+  const [state, dispatch] = useReducer(
+    createReducer(onChange),
+    initialRepoList,
+  );
+  const [showRepoDialog, setShowRepoDialog] = useState(false);
   const classes = useStyles();
 
   const onShowCreateRepoDialog = () => {
@@ -52,10 +45,6 @@ export const RepoList = () => {
     setShowRepoDialog(false);
     dispatch({ kind: 'ADD_REPO', name });
   };
-
-  if (state === 'NOT_LOADED') {
-    return <span>Loading...</span>;
-  }
 
   return (
     <div>

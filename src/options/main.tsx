@@ -1,8 +1,15 @@
 import { AppBar, Box, Container, Toolbar, Typography } from '@material-ui/core';
 import React from 'react';
+import { RepoList as RepoListModel } from './model';
 import { RepoList } from './repo-list';
 
-export const Main = () => (
+export const Main = ({
+  onChange,
+  initialRepoList,
+}: {
+  onChange: (initialRepoList: RepoListModel) => void;
+  initialRepoList: RepoListModel;
+}) => (
   <>
     <AppBar position="static">
       <Toolbar>
@@ -11,7 +18,7 @@ export const Main = () => (
     </AppBar>
     <Box p={1} />
     <Container>
-      <RepoList />
+      <RepoList onChange={onChange} initialRepoList={initialRepoList} />
     </Container>
   </>
 );
