@@ -27,10 +27,6 @@
     "default_icon": "images/icon48.png"
   },
   "options_page": "options.html",
-  "permissions": [
-    "declarativeContent",
-    "storage"
-  ],
+  "permissions": ["declarativeContent", "storage"],
   "manifest_version": 2
 }
-

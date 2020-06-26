@@ -6,53 +6,45 @@ import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import visualizer from 'rollup-plugin-visualizer';
 import sizes from 'rollup-plugin-sizes';
 
+const isProd = process.env.NODE_ENV === 'production';
+
+const defaultOutput = {
+  dir: 'dist',
+  format: 'iife',
+  sourcemap: true,
+};
+
+function createPluginList(isProd, name) {
+  const basePlugins = [
+    typescript(),
+    replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+    resolve(),
+    commonjs({ include: 'node_modules/**' }),
+  ];
+  return isProd
+    ? [
+        ...basePlugins,
+        compiler(),
+        visualizer({ filename: `${name}.stats.html`, gzipSize: true }),
+        sizes(),
+      ]
+    : basePlugins;
+}
+
 export default [
   {
     input: 'src/background.ts',
-    output: {
-      dir: 'dist',
-      format: 'iife',
-      sourcemap: true,
-    },
-    plugins: [
-      typescript(),
-      resolve(),
-      compiler(),
-      visualizer({ filename: 'background.stats.html', gzipSize: true }),
-      sizes(),
-    ],
+    output: defaultOutput,
+    plugins: createPluginList(isProd, 'background'),
   },
   {
-    input: 'build/content-script.js',
-    output: {
-      dir: 'dist',
-      format: 'iife',
-      sourcemap: true,
-    },
-    // plugins: [resolve()],
-    plugins: [
-      typescript(),
-      resolve(),
-      compiler(),
-      visualizer({ filename: 'content-scripts.stats.html', gzipSize: true }),
-      sizes(),
-    ],
+    input: 'src/content-script.ts',
+    output: defaultOutput,
+    plugins: createPluginList(isProd, 'content-script'),
   },
   {
-    input: 'build/options.js',
-    output: {
-      dir: 'dist',
-      format: 'iife',
-      sourcemap: true,
-    },
-    plugins: [
-      typescript(),
-      replace({'process.env.NODE_ENV': JSON.stringify('production')}),
-      resolve(),
-      commonjs({ include: 'node_modules/**' }),
-      compiler(),
-      visualizer({ filename: 'options.stats.html', gzipSize: true, }),
-      sizes(),
-    ],
+    input: 'src/options.tsx',
+    output: defaultOutput,
+    plugins: createPluginList(isProd, 'options'),
   },
-]
+];
