@@ -15,6 +15,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import partial from 'lodash-es/partial';
 import React from 'react';
+import { Li, Ul } from '../base-components';
 import { Repo as RepoModel } from './model';
 import { RepoDialog } from './repo-dialog';
 import { Rule } from './rule';
@@ -119,16 +120,22 @@ export const Repo = ({
               </Button>
             </div>
           )}
-          {repo.rules.map((rule) => {
-            return (
-              <Rule
-                key={rule.id}
-                rule={rule}
-                onUpdateRule={partial(onUpdateRule, rule.id)}
-                onDeleteRule={partial(onDeleteRule, rule.id)}
-              />
-            );
-          })}
+          {repo.rules.length > 0 && (
+            <Ul>
+              {repo.rules.map((rule) => {
+                return (
+                  <Li key={rule.id}>
+                    <Rule
+                      key={rule.id}
+                      rule={rule}
+                      onUpdateRule={partial(onUpdateRule, rule.id)}
+                      onDeleteRule={partial(onDeleteRule, rule.id)}
+                    />
+                  </Li>
+                );
+              })}
+            </Ul>
+          )}
         </CardContent>
       </Card>
       <RuleDialog

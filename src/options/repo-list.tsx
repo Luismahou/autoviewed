@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useReducer, useState } from 'react';
 import { Action, reducer, RepoList as RepoListModel } from './model';
+import { Ul, Li } from '../base-components';
 import { Repo } from './repo';
 import { RepoDialog } from './repo-dialog';
 
@@ -48,7 +49,7 @@ export const RepoList = ({
 
   return (
     <div>
-      <div className={classes.repoList}>
+      <Ul className={classes.repoList}>
         {state.repos.map((repo) => {
           const onDelete = () => {
             dispatch({ kind: 'DELETE_REPO', repoId: repo.id });
@@ -80,18 +81,20 @@ export const RepoList = ({
             });
           };
           return (
-            <Repo
-              key={repo.id}
-              repo={repo}
-              onDelete={onDelete}
-              onEditName={onEditName}
-              onAddRule={onAddRule}
-              onUpdateRule={onUpdateRule}
-              onDeleteRule={onDeleteRule}
-            />
+            <Li key={repo.id}>
+              <Repo
+                key={repo.id}
+                repo={repo}
+                onDelete={onDelete}
+                onEditName={onEditName}
+                onAddRule={onAddRule}
+                onUpdateRule={onUpdateRule}
+                onDeleteRule={onDeleteRule}
+              />
+            </Li>
           );
         })}
-      </div>
+      </Ul>
       {state.repos.length > 0 ? <Box p={1} /> : null}
       <Button
         variant="contained"

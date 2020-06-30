@@ -1,6 +1,6 @@
 {
   "name": "autoviewed",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Let me approve that file for you",
   "scripts": {
     "build": "npm run build:clean && npm run build:cp && npm run build:images && npm run build:rollup",
@@ -11,10 +11,10 @@
     "build:watch": "rollup --config --watch",
     "build:ts": "tsc",
     "build:zip": "cd dist && zip -r autoviewed-extension.zip . -x *.map && cd -",
+    "cy:open": "start-server-and-test 'start-storybook -p 6007 --ci' http://localhost:6007 'cypress open'",
     "dist": "NODE_ENV=production npm run build && npm run build:zip",
     "prettier": "prettier --write . --ignore-path .gitignore",
-    "storybook": "start-storybook -p 6006",
-    "storybook:static": "build-storybook"
+    "storybook": "start-storybook -p 6006"
   },
   "keywords": [],
   "author": "Luismahou",
@@ -30,16 +30,19 @@
     "@storybook/addons": "^5.3.19",
     "@storybook/preset-typescript": "^3.0.0",
     "@storybook/react": "^5.3.19",
+    "@testing-library/cypress": "^6.0.0",
     "@types/chrome": "0.0.117",
     "@types/lodash-es": "^4.17.3",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "babel-loader": "^8.1.0",
+    "cypress": "^4.9.0",
     "prettier": "^2.0.5",
     "prettier-plugin-organize-imports": "^1.1.0",
     "rollup": "^2.18.0",
     "rollup-plugin-sizes": "^1.0.2",
     "rollup-plugin-visualizer": "^4.0.4",
+    "start-server-and-test": "^1.11.0",
     "svg2png": "^4.1.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.5"

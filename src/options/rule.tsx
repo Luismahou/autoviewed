@@ -64,10 +64,10 @@ export const Rule = ({ rule, onDeleteRule, onUpdateRule }: RuleProps) => {
         )}
       </div>
       <div className={classes.toolbar}>
-        <IconButton onClick={onEdit}>
+        <IconButton aria-label="Edit rule" onClick={onEdit}>
           <CreateIcon fontSize="small" />
         </IconButton>
-        <IconButton onClick={onDeleteRule}>
+        <IconButton aria-label="Delete rule" onClick={onDeleteRule}>
           <DeleteIcon fontSize="small" />
         </IconButton>
       </div>
