@@ -2,8 +2,8 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useReducer, useState } from 'react';
+import { Li, Ul } from '../base-components';
 import { Action, reducer, RepoList as RepoListModel } from './model';
-import { Ul, Li } from '../base-components';
 import { Repo } from './repo';
 import { RepoDialog } from './repo-dialog';
 

@@ -15,19 +15,19 @@ context('Repo List', () => {
 
   it('should edit a repository', () => {
     addRepository('foo/bar');
-    addRepository('yo/xyz')
-    editRepository(/yo\/xyz/i, 'yo/yo')
-    cy.findByText(/yo\/yo/i).should('exist')
-  })
+    addRepository('yo/xyz');
+    editRepository(/yo\/xyz/i, 'yo/yo');
+    cy.findByText(/yo\/yo/i).should('exist');
+  });
 
   it('should delete all repositories', () => {
     addRepository('foo/bar');
-    addRepository('yo/xyz')
-    deleteRepository(/yo\/xyz/i)
-    cy.findByText(/yo\/xyz/i).should('not.exist')
-    deleteRepository(/foo\/bar/i)
-    cy.findByText(/foo\/bar/i).should('not.exist')
-  })
+    addRepository('yo/xyz');
+    deleteRepository(/yo\/xyz/i);
+    cy.findByText(/yo\/xyz/i).should('not.exist');
+    deleteRepository(/foo\/bar/i);
+    cy.findByText(/foo\/bar/i).should('not.exist');
+  });
 
   it('should add a rule', () => {
     addRepository('foo/bar');
@@ -45,48 +45,51 @@ context('Repo List', () => {
 
   it('should add multiple rules', () => {
     addRepository('foo/bar');
-    addRule('^.*\.snap$');
-    addRule('^.*_proto\.ts$', true);
+    addRule('^.*.snap$');
+    addRule('^.*_proto.ts$', true);
     cy.findByText(/snap/i).should('exist');
     cy.findByText(/proto/i).should('exist');
-    cy.findByText(/snap/i).closest('li').findByText('Hidden').should('not.exist')
-    cy.findByText(/proto/i).closest('li').findByText('Hidden').should('exist')
+    cy.findByText(/snap/i)
+      .closest('li')
+      .findByText('Hidden')
+      .should('not.exist');
+    cy.findByText(/proto/i).closest('li').findByText('Hidden').should('exist');
   });
 
   it('should edit regex', () => {
     addRepository('foo/bar');
-    addRule('^.*\.snap$');
-    cy.findByText(/proto/i).should('not.exist')
-    editRule(/snap/i, { newRegex: '^.*_proto\.ts$' })
-    cy.findByText(/proto/i).should('exist')
-  })
+    addRule('^.*.snap$');
+    cy.findByText(/proto/i).should('not.exist');
+    editRule(/snap/i, { newRegex: '^.*_proto.ts$' });
+    cy.findByText(/proto/i).should('exist');
+  });
 
   it('should edit hidden', () => {
     addRepository('foo/bar');
-    addRule('^.*\.snap$');
-    cy.findByText(/hidden/i).should('not.exist')
-    editRule(/snap/i, { newHidden: true })
-    cy.findByText(/hidden/i).should('exist')
-  })
+    addRule('^.*.snap$');
+    cy.findByText(/hidden/i).should('not.exist');
+    editRule(/snap/i, { newHidden: true });
+    cy.findByText(/hidden/i).should('exist');
+  });
 
   it('should edit regex and edit', () => {
     addRepository('foo/bar');
-    addRule('^.*\.snap$', true);
-    cy.findByText(/proto/i).should('not.exist')
-    cy.findByText(/hidden/i).should('exist')
-    editRule(/snap/i, { newRegex: '^.*_proto\.ts', newHidden: false })
-    cy.findByText(/proto/i).should('exist')
-    cy.findByText(/hidden/i).should('not.exist')
-  })
+    addRule('^.*.snap$', true);
+    cy.findByText(/proto/i).should('not.exist');
+    cy.findByText(/hidden/i).should('exist');
+    editRule(/snap/i, { newRegex: '^.*_proto.ts', newHidden: false });
+    cy.findByText(/proto/i).should('exist');
+    cy.findByText(/hidden/i).should('not.exist');
+  });
 
   it('should delete rule', () => {
     addRepository('foo/bar');
-    addRule('^.*\.snap$', true);
-    addRule('^.*_proto\.ts');
-    cy.findByText(/proto/i).should('exist')
-    deleteRule(/proto/i)
-    cy.findByText(/proto/i).should('not.exist')
-  })
+    addRule('^.*.snap$', true);
+    addRule('^.*_proto.ts');
+    cy.findByText(/proto/i).should('exist');
+    deleteRule(/proto/i);
+    cy.findByText(/proto/i).should('not.exist');
+  });
 
   function addRepository(name: string) {
     cy.findByRole('button', { name: /add repository/i }).click();
@@ -95,19 +98,28 @@ context('Repo List', () => {
         .click()
         .type(name);
       cy.findByRole('button', { name: /create/i }).click();
-    })
+    });
   }
 
   function editRepository(name: RegExp, newName: string) {
-    cy.findByText(name).closest('li').findByRole('button', { name: /edit repository/i }).click();
+    cy.findByText(name)
+      .closest('li')
+      .findByRole('button', { name: /edit repository/i })
+      .click();
     cy.findByRole('dialog').within(() => {
-      cy.findByLabelText(/repository name/i).click().type('{selectall}').type(newName);
+      cy.findByLabelText(/repository name/i)
+        .click()
+        .type('{selectall}')
+        .type(newName);
       cy.findByRole('button', { name: /update/i }).click();
-    })
+    });
   }
 
   function deleteRepository(name: RegExp) {
-    cy.findByText(name).closest('li').findByRole('button', { name: /delete repository/i }).click();
+    cy.findByText(name)
+      .closest('li')
+      .findByRole('button', { name: /delete repository/i })
+      .click();
   }
 
   function addRule(regex: string, hidden: boolean = false) {
@@ -115,35 +127,42 @@ context('Repo List', () => {
       .first()
       .click();
     cy.findByRole('dialog').within(() => {
-
-    cy.findByLabelText(/regex/i).click().type(regex);
-    if (hidden) {
-      cy.findByLabelText(/hide/i).click();
-    }
-    cy.findByRole('button', { name: /create/i }).click();
-    })
+      cy.findByLabelText(/regex/i).click().type(regex);
+      if (hidden) {
+        cy.findByLabelText(/hide/i).click();
+      }
+      cy.findByRole('button', { name: /create/i }).click();
+    });
   }
 
-  function editRule(currentRegex: RegExp, { newRegex, newHidden }: { newRegex?: string, newHidden?: boolean }) {
-    cy.findByText(currentRegex).closest('li').findByRole('button', { name: /edit rule/i }).click();
+  function editRule(
+    currentRegex: RegExp,
+    { newRegex, newHidden }: { newRegex?: string; newHidden?: boolean },
+  ) {
+    cy.findByText(currentRegex)
+      .closest('li')
+      .findByRole('button', { name: /edit rule/i })
+      .click();
     cy.findByRole('dialog').within(() => {
-    if (newRegex != null) {
-      cy.findByLabelText(/regex/i).click().type('{selectall}').type(newRegex);
-    }
-    if (newHidden != null) {
-      const checkbox = cy.findByLabelText(/hide/i);
-      if (newHidden) {
-        checkbox.check()
-      } else {
-        checkbox.uncheck();
+      if (newRegex != null) {
+        cy.findByLabelText(/regex/i).click().type('{selectall}').type(newRegex);
       }
-    }
-    cy.findByRole('button', { name: /update/i }).click();
-    })
+      if (newHidden != null) {
+        const checkbox = cy.findByLabelText(/hide/i);
+        if (newHidden) {
+          checkbox.check();
+        } else {
+          checkbox.uncheck();
+        }
+      }
+      cy.findByRole('button', { name: /update/i }).click();
+    });
   }
 
   function deleteRule(regex: RegExp) {
-    cy.findByText(regex).closest('li').findByRole('button', { name: /delete rule/i }).click();
+    cy.findByText(regex)
+      .closest('li')
+      .findByRole('button', { name: /delete rule/i })
+      .click();
   }
-
 });
