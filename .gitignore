@@ -2,3 +2,5 @@ node_modules
 dist
 build
 *.stats.html
+cypress/videos
+cypress/screenshots
