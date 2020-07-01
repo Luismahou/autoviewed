@@ -16,6 +16,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import partial from 'lodash-es/partial';
 import React from 'react';
 import { Li, Ul } from '../base-components';
+import { ConfirmDialog } from './confirm-dialog';
 import { Repo as RepoModel } from './model';
 import { RepoDialog } from './repo-dialog';
 import { Rule } from './rule';
@@ -50,6 +51,9 @@ export const Repo = ({
   const classes = useStyles();
   const [showRuleDialog, setShowRuleDialog] = React.useState(false);
   const [showRepoDialog, setShowRepoDialog] = React.useState(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = React.useState(
+    false,
+  );
 
   const onShowCreateRuleDialog = () => {
     setShowRuleDialog(true);
@@ -72,6 +76,18 @@ export const Repo = ({
     setShowRepoDialog(false);
     onEditName(name);
   };
+
+  const onOpenConfirmDeleteDialog = () => {
+    setShowConfirmDeleteDialog(true);
+  };
+  const onCancelDelete = () => {
+    setShowConfirmDeleteDialog(false);
+  };
+  const onConfirmDelete = () => {
+    setShowConfirmDeleteDialog(false);
+    onDelete();
+  };
+
   return (
     <>
       <Card variant="outlined">
@@ -96,7 +112,10 @@ export const Repo = ({
                 </IconButton>
               </Tooltip>
               <Tooltip title="Delete repository">
-                <IconButton onClick={onDelete} aria-label="Delete repository">
+                <IconButton
+                  onClick={onOpenConfirmDeleteDialog}
+                  aria-label="Delete repository"
+                >
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
@@ -150,6 +169,14 @@ export const Repo = ({
         onCancel={onCancelEditRepo}
         onSubmit={onUpdateRepo}
         open={showRepoDialog}
+      />
+      <ConfirmDialog
+        open={showConfirmDeleteDialog}
+        title="Delete repository?"
+        message="This action cannot be undone"
+        okLabel="Delete"
+        onCancel={onCancelDelete}
+        onOk={onConfirmDelete}
       />
     </>
   );

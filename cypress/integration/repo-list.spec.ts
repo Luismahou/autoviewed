@@ -29,6 +29,12 @@ context('Repo List', () => {
     cy.findByText(/foo\/bar/i).should('not.exist');
   });
 
+  it('should cancel deletion', () => {
+    addRepository('foo/bar');
+    deleteRepository(/foo\/bar/i, false);
+    cy.findByText(/foo\/bar/i).should('exist');
+  });
+
   it('should add a rule', () => {
     addRepository('foo/bar');
     addRule('^.*.snap$');
@@ -91,6 +97,13 @@ context('Repo List', () => {
     cy.findByText(/proto/i).should('not.exist');
   });
 
+  it('should cancel rule deletion', () => {
+    addRepository('foo/bar');
+    addRule('^.*.snap$', true);
+    deleteRule(/snap/i, false);
+    cy.findByText(/snap/i).should('exist');
+  });
+
   function addRepository(name: string) {
     cy.findByRole('button', { name: /add repository/i }).click();
     cy.findByRole('dialog').within(() => {
@@ -115,11 +128,16 @@ context('Repo List', () => {
     });
   }
 
-  function deleteRepository(name: RegExp) {
+  function deleteRepository(name: RegExp, confirmDeletion: boolean = true) {
     cy.findByText(name)
       .closest('li')
       .findByRole('button', { name: /delete repository/i })
       .click();
+    cy.findByRole('dialog').within(() => {
+      cy.findByRole('button', {
+        name: confirmDeletion ? /delete/i : /cancel/i,
+      }).click();
+    });
   }
 
   function addRule(regex: string, hidden: boolean = false) {
@@ -159,10 +177,15 @@ context('Repo List', () => {
     });
   }
 
-  function deleteRule(regex: RegExp) {
+  function deleteRule(regex: RegExp, confirmDeletion: boolean = true) {
     cy.findByText(regex)
       .closest('li')
       .findByRole('button', { name: /delete rule/i })
       .click();
+    cy.findByRole('dialog').within(() => {
+      cy.findByRole('button', {
+        name: confirmDeletion ? /delete/i : /cancel/i,
+      }).click();
+    });
   }
 });

@@ -12,7 +12,9 @@
     "build:ts": "tsc",
     "build:zip": "cd dist && zip -r autoviewed-extension.zip . -x *.map && cd -",
     "cy:open": "start-server-and-test 'start-storybook -p 6007 --ci' http://localhost:6007 'cypress open'",
-    "dist": "NODE_ENV=production npm run build && npm run build:zip",
+    "cy:run": "start-server-and-test 'start-storybook -p 6007 --ci' http://localhost:6007 'cypress run'",
+    "dist": "NODE_ENV=production npm run build && npm run cy:run && npm run build:zip",
+    "dist:quick": "NODE_ENV=production npm run build && npm run build:zip",
     "prettier": "prettier --write . --ignore-path .gitignore",
     "storybook": "start-storybook -p 6006"
   },

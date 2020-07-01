@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import React from 'react';
+import { ConfirmDialog } from './confirm-dialog';
 import { Rule as RuleModel } from './model';
 import { RuleDialog } from './rule-dialog';
 
@@ -38,19 +39,34 @@ type RuleProps = {
 };
 
 export const Rule = ({ rule, onDeleteRule, onUpdateRule }: RuleProps) => {
-  const [showDialog, setShowDialog] = React.useState(false);
+  const [showEditDialog, setShowEditDialog] = React.useState(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = React.useState(
+    false,
+  );
   const classes = useStyles();
 
   const onEdit = () => {
-    setShowDialog(true);
+    setShowEditDialog(true);
   };
   const onCancel = () => {
-    setShowDialog(false);
+    setShowEditDialog(false);
   };
   const onSubmit = (newRegex: string, newHide: boolean) => {
-    setShowDialog(false);
+    setShowEditDialog(false);
     onUpdateRule(newRegex, newHide);
   };
+
+  const onOpenConfirmDeleteDialog = () => {
+    setShowConfirmDeleteDialog(true);
+  };
+  const onCancelDelete = () => {
+    setShowConfirmDeleteDialog(false);
+  };
+  const onConfirmDelete = () => {
+    setShowConfirmDeleteDialog(false);
+    onDeleteRule();
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.rule}>
@@ -67,7 +83,10 @@ export const Rule = ({ rule, onDeleteRule, onUpdateRule }: RuleProps) => {
         <IconButton aria-label="Edit rule" onClick={onEdit}>
           <CreateIcon fontSize="small" />
         </IconButton>
-        <IconButton aria-label="Delete rule" onClick={onDeleteRule}>
+        <IconButton
+          aria-label="Delete rule"
+          onClick={onOpenConfirmDeleteDialog}
+        >
           <DeleteIcon fontSize="small" />
         </IconButton>
       </div>
@@ -75,9 +94,17 @@ export const Rule = ({ rule, onDeleteRule, onUpdateRule }: RuleProps) => {
         kind="update"
         initialRegex={rule.regex}
         initialHide={rule.hide}
-        open={showDialog}
+        open={showEditDialog}
         onCancel={onCancel}
         onSubmit={onSubmit}
+      />
+      <ConfirmDialog
+        open={showConfirmDeleteDialog}
+        title="Delete rule?"
+        message="This action cannot be undone"
+        okLabel="Delete"
+        onCancel={onCancelDelete}
+        onOk={onConfirmDelete}
       />
     </div>
   );
