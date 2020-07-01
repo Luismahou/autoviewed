@@ -16,6 +16,11 @@
     "prettier": "prettier --write . --ignore-path .gitignore",
     "storybook": "start-storybook -p 6006"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "keywords": [],
   "author": "Luismahou",
   "license": "ISC",
@@ -37,8 +42,10 @@
     "@types/react-dom": "^16.9.8",
     "babel-loader": "^8.1.0",
     "cypress": "^4.9.0",
+    "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "prettier-plugin-organize-imports": "^1.1.0",
+    "pretty-quick": "^2.0.1",
     "rollup": "^2.18.1",
     "rollup-plugin-sizes": "^1.0.2",
     "rollup-plugin-visualizer": "^4.0.4",
