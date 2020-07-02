@@ -9,9 +9,9 @@ Easy peasy, just go to <https://chrome.google.com/webstore/detail/autoviewed/occ
 ## Use cases
 
 Hide auto-generated files you might have in your repository.
-I know, I know, you shouldn't have auto-generated files in a git repository, but you know, sometimes you do. I'm not here to judge you.
+I know, I know, you shouldn't have auto-generated files in your git repository, but you know, sometimes you do. I'm not here to judge you.
 
-Your teammates insist in creating jest snapshots for their react components and you just don't want to waste your time reviewing them.
+Your teammates insist in creating jest snapshots for their React components and you just don't want to waste your time reviewing them.
 
 ## How does it work?
 
