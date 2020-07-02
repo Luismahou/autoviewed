@@ -20,7 +20,10 @@ First you need to configure the extension:
 1. Right click on the extension button and select `Options`.
    ![](docs/open-options.png)
 1. Add the repositories in which you want the extension to be enabled.
+   ![](docs/add-repository.png)
 1. Add a regular expression to match the files you want to mark as viewed automatically.
-1. Go to a pull request and select `files` tab.
+   ![](docs/add-rule.png)
+1. Go to a pull request and select `Files changed` tab.
+   ![](docs/select-files.png)
 1. See the `viewed` progress bar moving.
    ![](docs/autoviewed-progress.gif)
