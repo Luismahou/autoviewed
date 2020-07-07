@@ -127,8 +127,8 @@ export const Repo = ({
           {repo.rules.length === 0 && (
             <div className={classes.message}>
               <Typography>
-                Add rule to start approving files automatically in this
-                repository
+                Add a rule to start marking as viewed files automatically in
+                this repository
               </Typography>
               <Button
                 variant="contained"

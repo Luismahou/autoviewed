@@ -9,6 +9,10 @@ export default {
 
 export const Interactive = () => {
   return (
-    <RepoList onChange={action('on change')} initialRepoList={{ repos: [] }} />
+    <RepoList
+      extensionId="occcjmolphcfebdeichmoflmfgeefjef"
+      onChange={action('on change')}
+      initialRepoList={{ repos: [] }}
+    />
   );
 };

@@ -1,6 +1,6 @@
 {
   "name": "autoviewed",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Let me approve that file for you",
   "scripts": {
     "build": "npm run build:clean && npm run build:cp && npm run build:images && npm run build:rollup",
@@ -44,7 +44,6 @@
     "@types/react-dom": "^16.9.8",
     "babel-loader": "^8.1.0",
     "cypress": "^4.9.0",
-    "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "prettier-plugin-organize-imports": "^1.1.0",
     "pretty-quick": "^2.0.1",
@@ -59,6 +58,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "husky": "^4.2.5",
     "immer": "^7.0.5",
     "lodash-es": "^4.17.15",
     "react": "^16.13.1",

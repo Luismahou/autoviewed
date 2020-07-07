@@ -1,5 +1,4 @@
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
+import { Box, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useReducer, useState } from 'react';
 import { Li, Ul } from '../base-components';
@@ -20,12 +19,21 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridRowGap: theme.spacing(2),
   },
+  message: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyItems: 'center',
+    alignItems: 'center',
+    padding: theme.spacing(4),
+  },
 }));
 
 export const RepoList = ({
+  extensionId,
   initialRepoList,
   onChange,
 }: {
+  extensionId: string;
   initialRepoList: RepoListModel;
   onChange: (newRepoList: RepoListModel) => void;
 }) => {
@@ -47,62 +55,102 @@ export const RepoList = ({
     dispatch({ kind: 'ADD_REPO', name });
   };
 
+  const addRepoBtn = (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={onShowCreateRepoDialog}
+    >
+      Add repository
+    </Button>
+  );
+
   return (
     <div>
-      <Ul className={classes.repoList}>
-        {state.repos.map((repo) => {
-          const onDelete = () => {
-            dispatch({ kind: 'DELETE_REPO', repoId: repo.id });
-          };
-          const onEditName = (newName: string) => {
-            dispatch({ kind: 'UPDATE_REPO_NAME', repoId: repo.id, newName });
-          };
-          const onAddRule = (regex: string, hide: boolean) => {
-            dispatch({ kind: 'ADD_RULE', repoId: repo.id, regex, hide });
-          };
-          const onUpdateRule = (
-            ruleId: number,
-            newRegex: string,
-            newHide: boolean,
-          ) => {
-            dispatch({
-              kind: 'UPDATE_RULE',
-              repoId: repo.id,
-              ruleId,
-              newRegex,
-              newHide,
-            });
-          };
-          const onDeleteRule = (ruleId: number) => {
-            dispatch({
-              kind: 'DELETE_RULE',
-              repoId: repo.id,
-              ruleId,
-            });
-          };
-          return (
-            <Li key={repo.id}>
-              <Repo
-                key={repo.id}
-                repo={repo}
-                onDelete={onDelete}
-                onEditName={onEditName}
-                onAddRule={onAddRule}
-                onUpdateRule={onUpdateRule}
-                onDeleteRule={onDeleteRule}
-              />
-            </Li>
-          );
-        })}
-      </Ul>
-      {state.repos.length > 0 ? <Box p={1} /> : null}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onShowCreateRepoDialog}
-      >
-        Add repository
-      </Button>
+      {state.repos.length > 0 && (
+        <>
+          <Ul className={classes.repoList}>
+            {state.repos.map((repo) => {
+              const onDelete = () => {
+                dispatch({ kind: 'DELETE_REPO', repoId: repo.id });
+              };
+              const onEditName = (newName: string) => {
+                dispatch({
+                  kind: 'UPDATE_REPO_NAME',
+                  repoId: repo.id,
+                  newName,
+                });
+              };
+              const onAddRule = (regex: string, hide: boolean) => {
+                dispatch({ kind: 'ADD_RULE', repoId: repo.id, regex, hide });
+              };
+              const onUpdateRule = (
+                ruleId: number,
+                newRegex: string,
+                newHide: boolean,
+              ) => {
+                dispatch({
+                  kind: 'UPDATE_RULE',
+                  repoId: repo.id,
+                  ruleId,
+                  newRegex,
+                  newHide,
+                });
+              };
+              const onDeleteRule = (ruleId: number) => {
+                dispatch({
+                  kind: 'DELETE_RULE',
+                  repoId: repo.id,
+                  ruleId,
+                });
+              };
+              return (
+                <Li key={repo.id}>
+                  <Repo
+                    key={repo.id}
+                    repo={repo}
+                    onDelete={onDelete}
+                    onEditName={onEditName}
+                    onAddRule={onAddRule}
+                    onUpdateRule={onUpdateRule}
+                    onDeleteRule={onDeleteRule}
+                  />
+                </Li>
+              );
+            })}
+          </Ul>
+          <Box p={1} />
+          {addRepoBtn}
+        </>
+      )}
+      {state.repos.length === 0 && (
+        <div className={classes.message}>
+          <Typography gutterBottom={true}>
+            Thanks for installing{' '}
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://chrome.google.com/webstore/detail/${extensionId}`}
+            >
+              this extension
+            </a>
+            .
+          </Typography>
+          <Typography gutterBottom={true}>
+            Speed up your code reviews by adding your first GitHub repository.
+          </Typography>
+          <Box p={2}>
+            {addRepoBtn}
+            <Button
+              href="https://github.com/Luismahou/autoviewed#introduction"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Need help?
+            </Button>
+          </Box>
+        </div>
+      )}
       <RepoDialog
         kind="create"
         open={showRepoDialog}

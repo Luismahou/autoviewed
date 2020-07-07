@@ -1,4 +1,4 @@
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(function ({ reason }) {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([
       {
@@ -13,4 +13,13 @@ chrome.runtime.onInstalled.addListener(function () {
       },
     ]);
   });
+
+  // Open the options page when the extension is installed
+  if (reason === 'installed') {
+    chrome.storage.sync.get(['db'], (result) => {
+      if (result?.db?.repos?.length > 0) {
+        chrome.runtime.openOptionsPage();
+      }
+    });
+  }
 });
