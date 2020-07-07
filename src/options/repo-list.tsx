@@ -15,7 +15,7 @@ function createReducer(onChange: (newRepoList: RepoListModel) => void) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  repoList: {
+  vbox: {
     display: 'grid',
     gridRowGap: theme.spacing(2),
   },
@@ -68,8 +68,8 @@ export const RepoList = ({
   return (
     <div>
       {state.repos.length > 0 && (
-        <>
-          <Ul className={classes.repoList}>
+        <div className={classes.vbox}>
+          <Ul className={classes.vbox}>
             {state.repos.map((repo) => {
               const onDelete = () => {
                 dispatch({ kind: 'DELETE_REPO', repoId: repo.id });
@@ -119,9 +119,8 @@ export const RepoList = ({
               );
             })}
           </Ul>
-          <Box p={1} />
-          {addRepoBtn}
-        </>
+          <div>{addRepoBtn}</div>
+        </div>
       )}
       {state.repos.length === 0 && (
         <div className={classes.message}>
@@ -139,16 +138,7 @@ export const RepoList = ({
           <Typography gutterBottom={true}>
             Speed up your code reviews by adding your first GitHub repository.
           </Typography>
-          <Box p={2}>
-            {addRepoBtn}
-            <Button
-              href="https://github.com/Luismahou/autoviewed#introduction"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Need help?
-            </Button>
-          </Box>
+          <Box p={2}>{addRepoBtn}</Box>
         </div>
       )}
       <RepoDialog
