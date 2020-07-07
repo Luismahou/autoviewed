@@ -47,4 +47,9 @@ export default [
     output: defaultOutput,
     plugins: createPluginList(isProd, 'options'),
   },
+  {
+    input: 'src/popup.tsx',
+    output: defaultOutput,
+    plugins: createPluginList(isProd, 'popup'),
+  },
 ];

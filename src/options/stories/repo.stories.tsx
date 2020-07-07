@@ -15,39 +15,35 @@ const baseProps = {
   onDeleteRule: action('on delete rule'),
 };
 
-export const WithoutRules = () => {
-  return (
-    <Repo
-      {...baseProps}
-      repo={{
-        id: 1,
-        name: 'foo/bar',
-        rules: [],
-      }}
-    />
-  );
-};
+export const WithoutRules = () => (
+  <Repo
+    {...baseProps}
+    repo={{
+      id: 1,
+      name: 'foo/bar',
+      rules: [],
+    }}
+  />
+);
 
-export const WithRules = () => {
-  return (
-    <Repo
-      {...baseProps}
-      repo={{
-        id: 1,
-        name: 'foo/bar',
-        rules: [
-          {
-            id: 1,
-            regex: '^.*\\.snap$',
-            hide: true,
-          },
-          {
-            id: 2,
-            regex: '^.*\\.proto\\.ts$',
-            hide: false,
-          },
-        ],
-      }}
-    />
-  );
-};
+export const WithRules = () => (
+  <Repo
+    {...baseProps}
+    repo={{
+      id: 1,
+      name: 'foo/bar',
+      rules: [
+        {
+          id: 1,
+          regex: '^.*\\.snap$',
+          hide: true,
+        },
+        {
+          id: 2,
+          regex: '^.*\\.proto\\.ts$',
+          hide: false,
+        },
+      ],
+    }}
+  />
+);
