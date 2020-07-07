@@ -15,9 +15,10 @@ chrome.runtime.onInstalled.addListener(function ({ reason }) {
   });
 
   // Open the options page when the extension is installed
-  if (reason === 'installed') {
+  if (reason === 'install') {
     chrome.storage.sync.get(['db'], (result) => {
-      if (result?.db?.repos?.length > 0) {
+      const isConfigured = result?.db?.repos?.length > 0;
+      if (!isConfigured) {
         chrome.runtime.openOptionsPage();
       }
     });
