@@ -61,16 +61,24 @@ const markAllAsViewed = debounce(() => {
   ) as HTMLCollectionOf<HTMLDivElement>;
   oldFilesCount = fileElements.length;
   for (let fileElement of fileElements) {
-    const filename = extractFilename(fileElement);
+    if (!fileElement.id.startsWith('diff-')) {
+      continue;
+    }
+    try {
+      const filename = extractFilename(fileElement);
 
-    config.rules.forEach((rule) => {
-      if (rule.regex.test(filename)) {
-        markAsViewed(filename, fileElement);
-        if (rule.hide) {
-          hideFile(fileElement);
+      config.rules.forEach((rule) => {
+        if (rule.regex.test(filename)) {
+          markAsViewed(filename, fileElement);
+          if (rule.hide) {
+            hideFile(fileElement);
+          }
         }
-      }
-    });
+      });
+    } catch (error) {
+      // This error normally happens because GitHub uses `file` class for some hidden comment components
+      console.error('Cannot find filename for:', fileElement);
+    }
   }
 }, 200);
 
