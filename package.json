@@ -1,6 +1,6 @@
 {
   "name": "autoviewed",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Let me approve that file for you",
   "scripts": {
     "build": "npm run build:clean && npm run build:cp && npm run build:images && npm run build:rollup",
