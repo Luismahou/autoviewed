@@ -51,9 +51,8 @@ export const Repo = ({
   const classes = useStyles();
   const [showRuleDialog, setShowRuleDialog] = React.useState(false);
   const [showRepoDialog, setShowRepoDialog] = React.useState(false);
-  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = React.useState(
-    false,
-  );
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] =
+    React.useState(false);
 
   const onShowCreateRuleDialog = () => {
     setShowRuleDialog(true);

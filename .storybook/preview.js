@@ -1,6 +1,6 @@
-import React from 'react';
-import { addDecorator } from '@storybook/react';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { addDecorator } from '@storybook/react';
+import React from 'react';
 
 addDecorator((storyFn) => (
   <>

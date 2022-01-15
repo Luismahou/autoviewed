@@ -1,10 +1,10 @@
-import resolve from '@rollup/plugin-node-resolve';
+import compiler from '@ampproject/rollup-plugin-closure-compiler';
 import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
-import compiler from '@ampproject/rollup-plugin-closure-compiler';
-import visualizer from 'rollup-plugin-visualizer';
 import sizes from 'rollup-plugin-sizes';
+import visualizer from 'rollup-plugin-visualizer';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -17,7 +17,10 @@ const defaultOutput = {
 function createPluginList(isProd, name) {
   const basePlugins = [
     typescript(),
-    replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      preventAssignment: true,
+    }),
     resolve(),
     commonjs({ include: 'node_modules/**' }),
   ];

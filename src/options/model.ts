@@ -113,35 +113,33 @@ function updateRule(
   castDraft(rule).hide = newHide;
 }
 
-export const reducer = produce(
-  (draft: RepoList, action: Action): RepoList => {
-    switch (action.kind) {
-      case 'ADD_REPO':
-        addRepo(draft, action.name);
-        break;
-      case 'UPDATE_REPO_NAME':
-        repoUpdateName(draft, action.repoId, action.newName);
-        break;
-      case 'DELETE_REPO':
-        deleteRepo(draft, action.repoId);
-        break;
-      case 'ADD_RULE':
-        addRule(draft, action.repoId, action.regex, action.hide);
-        break;
-      case 'DELETE_RULE':
-        deleteRule(draft, action.repoId, action.ruleId);
-        break;
-      case 'UPDATE_RULE':
-        updateRule(
-          draft,
-          action.repoId,
-          action.ruleId,
-          action.newRegex,
-          action.newHide,
-        );
-        break;
-    }
+export const reducer = produce((draft: RepoList, action: Action): RepoList => {
+  switch (action.kind) {
+    case 'ADD_REPO':
+      addRepo(draft, action.name);
+      break;
+    case 'UPDATE_REPO_NAME':
+      repoUpdateName(draft, action.repoId, action.newName);
+      break;
+    case 'DELETE_REPO':
+      deleteRepo(draft, action.repoId);
+      break;
+    case 'ADD_RULE':
+      addRule(draft, action.repoId, action.regex, action.hide);
+      break;
+    case 'DELETE_RULE':
+      deleteRule(draft, action.repoId, action.ruleId);
+      break;
+    case 'UPDATE_RULE':
+      updateRule(
+        draft,
+        action.repoId,
+        action.ruleId,
+        action.newRegex,
+        action.newHide,
+      );
+      break;
+  }
 
-    return draft;
-  },
-);
+  return draft;
+});

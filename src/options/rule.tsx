@@ -40,9 +40,8 @@ type RuleProps = {
 
 export const Rule = ({ rule, onDeleteRule, onUpdateRule }: RuleProps) => {
   const [showEditDialog, setShowEditDialog] = React.useState(false);
-  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = React.useState(
-    false,
-  );
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] =
+    React.useState(false);
   const classes = useStyles();
 
   const onEdit = () => {

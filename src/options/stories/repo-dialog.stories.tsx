@@ -8,9 +8,8 @@ export default {
 };
 
 export const Interactive = () => {
-  const [kind, setKind] = React.useState<
-    React.ComponentProps<typeof RepoDialog>['kind']
-  >('create');
+  const [kind, setKind] =
+    React.useState<React.ComponentProps<typeof RepoDialog>['kind']>('create');
   const [showDialog, setShowDialog] = React.useState(false);
   const onOpenCreateVariant = () => {
     setKind('create');
