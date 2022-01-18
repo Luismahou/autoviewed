@@ -1,7 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Autoviewed",
   "version": "1.1.2",
+  "default_locale": "en",
   "description": "Mark as viewed files that aren't worth reviewing in your Github pull requests",
   "icons": {
     "16": "images/icon16.png",
@@ -14,8 +15,7 @@
     "512": "images/icon512.png"
   },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
