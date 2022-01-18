@@ -23,10 +23,14 @@ export const ConfirmDialog = ({
   onOk: () => void;
   onCancel: () => void;
 }) => {
+  const handleClose = (_: object, reason: string) => {
+    if (reason !== 'backdropClick') {
+      onCancel();
+    }
+  };
   return (
     <Dialog
-      disableBackdropClick={true}
-      onClose={onCancel}
+      onClose={handleClose}
       open={open}
       aria-labelledby="confirm-dialog-title"
     >

@@ -46,6 +46,11 @@ export const RepoDialog = (
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
+  const handleClose = (_: object, reason: string) => {
+    if (reason !== 'backdropClick') {
+      props.onCancel();
+    }
+  };
   const handleSubmit = () => {
     if (isNameValid(name)) {
       props.onSubmit(name);
@@ -55,8 +60,7 @@ export const RepoDialog = (
 
   return (
     <Dialog
-      disableBackdropClick={true}
-      onClose={props.onCancel}
+      onClose={handleClose}
       open={props.open}
       aria-labelledby="repo-dialog-title"
     >

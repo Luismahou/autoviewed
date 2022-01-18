@@ -57,6 +57,11 @@ export const RuleDialog = (
   const handleHideChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHide(event.target.checked);
   };
+  const handleClose = (_: object, reason: string) => {
+    if (reason !== 'backdropClick') {
+      props.onCancel();
+    }
+  };
   const handleSubmit = () => {
     if (regex.length > 0) {
       props.onSubmit(regex, hide);
@@ -66,8 +71,7 @@ export const RuleDialog = (
 
   return (
     <Dialog
-      disableBackdropClick={true}
-      onClose={props.onCancel}
+      onClose={handleClose}
       open={props.open}
       aria-labelledby="rule-dialog-title"
     >
