@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Autoviewed",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "default_locale": "en",
   "description": "Mark as viewed files that aren't worth reviewing in your Github pull requests",
   "icons": {
