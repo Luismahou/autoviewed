@@ -31,7 +31,7 @@
     "@rollup/plugin-typescript": "^8.0.3",
     "@storybook/addon-actions": "^6.4.13",
     "@storybook/addons": "^6.4.13",
-    "@storybook/react": "^6.4.13",
+    "@storybook/react": "^7.4.6",
     "@testing-library/cypress": "^8.0.2",
     "@types/chrome": "0.0.176",
     "@types/filesystem": "^0.0.32",
